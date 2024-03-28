@@ -3,11 +3,13 @@ package game
 import (
 	"reflect"
 	"testing"
+
+	"github.com/Dae314/placeit-sim/utils"
 )
 
 func TestNewGame(t *testing.T) {
 	game := NewGame()
-	checkType(t, game, "game.PlaceItGame")
+	utils.CheckType(t, game, "game.PlaceItGame")
 }
 
 func TestDraw(t *testing.T) {
@@ -15,14 +17,14 @@ func TestDraw(t *testing.T) {
 	t.Run("Draw in DrawState", func(t *testing.T) {
 		err := game.Draw()
 
-		checkEquals(t, err, nil)
-		checkEquals(t, game.State, PlaceState)
-		checkNotNil(t, game.CurDraw)
+		utils.CheckEquals(t, err, nil)
+		utils.CheckEquals(t, game.State, PlaceState)
+		utils.CheckNotNil(t, game.CurDraw)
 	})
 	t.Run("Draw in PlaceState", func(t *testing.T) {
 		err := game.Draw()
 
-		checkType(t, err, "*game.ErrGameInvalidState")
+		utils.CheckType(t, err, "*game.ErrGameInvalidState")
 	})
 }
 
@@ -38,7 +40,7 @@ func TestPlace(t *testing.T) {
 		}
 		err := game.Place(9)
 
-		checkType(t, err, "*game.ErrGameInvalidState")
+		utils.CheckType(t, err, "*game.ErrGameInvalidState")
 	})
 	t.Run("Place in PlaceState", func(t *testing.T) {
 		game := PlaceItGame{
@@ -49,9 +51,9 @@ func TestPlace(t *testing.T) {
 		}
 		err := game.Place(3)
 
-		checkEquals(t, err, nil)
-		checkEquals(t, game.State, DrawState)
-		checkEquals(t, game.CurDraw, -1)
+		utils.CheckEquals(t, err, nil)
+		utils.CheckEquals(t, game.State, DrawState)
+		utils.CheckEquals(t, game.CurDraw, -1)
 	})
 	t.Run("Place Out of Bounds", func(t *testing.T) {
 		game := PlaceItGame{
@@ -61,9 +63,9 @@ func TestPlace(t *testing.T) {
 		}
 		err := game.Place(100)
 
-		checkNotNil(t, err)
+		utils.CheckNotNil(t, err)
 		if err != nil {
-			checkType(t, err, "*game.ErrPlaceOutofBounds")
+			utils.CheckType(t, err, "*game.ErrPlaceOutofBounds")
 		}
 	})
 	t.Run("Place in Invalid Slot", func(t *testing.T) {
@@ -74,9 +76,9 @@ func TestPlace(t *testing.T) {
 		}
 		err := game.Place(1)
 
-		checkNotNil(t, err)
+		utils.CheckNotNil(t, err)
 		if err != nil {
-			checkType(t, err, "*game.ErrPlaceOutofBounds")
+			utils.CheckType(t, err, "*game.ErrPlaceOutofBounds")
 		}
 	})
 }
@@ -213,7 +215,7 @@ func TestCheckGameover(t *testing.T) {
 		got := checkGameover(&winningGame)
 		want := WinState
 
-		checkEquals(t, got, want)
+		utils.CheckEquals(t, got, want)
 	})
 	t.Run("Test Game Lose", func(t *testing.T) {
 		loseSlots := []int{
@@ -229,7 +231,7 @@ func TestCheckGameover(t *testing.T) {
 		got := checkGameover(&losingGame)
 		want := LoseState
 
-		checkEquals(t, got, want)
+		utils.CheckEquals(t, got, want)
 	})
 	t.Run("Test Not Gameover", func(t *testing.T) {
 		normalSlots := []int{
@@ -245,29 +247,6 @@ func TestCheckGameover(t *testing.T) {
 		got := checkGameover(&normalGame)
 		want := PlaceState
 
-		checkEquals(t, got, want)
+		utils.CheckEquals(t, got, want)
 	})
-}
-
-func checkType[T any](t testing.TB, got T, want string) {
-	t.Helper()
-	gotType := reflect.TypeOf(got).String()
-	if reflect.TypeOf(got).String() != want {
-		t.Errorf("got variable of type %q want variable of type %q", gotType, want)
-	}
-}
-
-func checkEquals[T comparable](t testing.TB, got, want T) {
-	t.Helper()
-	if got != want {
-		t.Errorf("got %v want %v", got, want)
-	}
-}
-
-func checkNotNil[T comparable](t testing.TB, got T) {
-	t.Helper()
-	var zero T
-	if got == zero {
-		t.Errorf("expected %v to not be nil", got)
-	}
 }

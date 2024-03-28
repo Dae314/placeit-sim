@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/Dae314/placeit-sim/utils"
 )
 
 const deckSize = 1000
@@ -68,7 +70,7 @@ func (g *PlaceItGame) Draw() error {
 	}
 	randIdx := rand.Intn(len(g.Deck))
 	g.CurDraw = g.Deck[randIdx]
-	g.Deck = removeFromSlice(g.Deck, randIdx)
+	g.Deck = utils.RemoveFromSlice(g.Deck, randIdx)
 	g.ValidSlots = validSlots(g)
 	g.State = checkGameover(g)
 	return nil
@@ -78,7 +80,7 @@ func (g *PlaceItGame) Place(i int) error {
 	if g.State != PlaceState {
 		return &ErrGameInvalidState{State: g.State, Action: "Place"}
 	}
-	if !contains(g.ValidSlots, i) {
+	if !utils.Contains(g.ValidSlots, i) {
 		return &ErrPlaceOutofBounds{index: i}
 	}
 	if g.Slots[i] != -1 {
@@ -157,18 +159,4 @@ func checkGameover(g *PlaceItGame) GameState {
 		}
 	}
 	return WinState
-}
-
-func removeFromSlice(s []int, i int) []int {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
-}
-
-func contains[T comparable](s []T, e T) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }
