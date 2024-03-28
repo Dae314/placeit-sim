@@ -34,3 +34,12 @@ func TestAverage(t *testing.T) {
 	want := float32(2.5)
 	CheckEquals(t, got, want)
 }
+
+func TestHistogram(t *testing.T) {
+	testSlice := []int{1, 1, 5, 5, 1, 3, 4, 2, 3, 3, 2, 3, 3}
+	got := Histogram(testSlice, 5)
+	want := []int{3, 2, 5, 1, 2}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v, want %v", got, want)
+	}
+}

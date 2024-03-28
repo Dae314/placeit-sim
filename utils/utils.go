@@ -56,3 +56,14 @@ func Average(s []int) float32 {
 	}
 	return float32(total) / float32(len(s))
 }
+
+func Histogram(s []int, max int) []int {
+	retVal := make([]int, max)
+	for i := range retVal {
+		retVal[i] = 0
+	}
+	for _, v := range s {
+		retVal[v-1]++
+	}
+	return retVal
+}
