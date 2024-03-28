@@ -29,3 +29,10 @@ func TestRemoveFromSlice(t *testing.T) {
 		}
 	})
 }
+
+func TestAverage(t *testing.T) {
+	testSlice := []int{1, 2, 3, 4}
+	got := Average(testSlice)
+	want := float32(2.5)
+	CheckEquals(t, got, want)
+}
