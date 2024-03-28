@@ -214,8 +214,10 @@ func TestCheckGameover(t *testing.T) {
 		}
 		got := checkGameover(&winningGame)
 		want := WinState
+		wantScore := 20
 
 		utils.CheckEquals(t, got, want)
+		utils.CheckEquals(t, winningGame.Score, wantScore)
 	})
 	t.Run("Test Game Lose", func(t *testing.T) {
 		loseSlots := []int{
@@ -230,8 +232,10 @@ func TestCheckGameover(t *testing.T) {
 		}
 		got := checkGameover(&losingGame)
 		want := LoseState
+		wantScore := 1
 
 		utils.CheckEquals(t, got, want)
+		utils.CheckEquals(t, losingGame.Score, wantScore)
 	})
 	t.Run("Test Not Gameover", func(t *testing.T) {
 		normalSlots := []int{

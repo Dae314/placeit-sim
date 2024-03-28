@@ -43,6 +43,7 @@ type PlaceItGame struct {
 	CurDraw    int
 	ValidSlots []int
 	Deck       []int
+	Score      int
 }
 
 func NewGame() PlaceItGame {
@@ -61,6 +62,7 @@ func NewGame() PlaceItGame {
 		State:   DrawState,
 		CurDraw: -1,
 		Deck:    deck,
+		Score:   0,
 	}
 }
 
@@ -150,13 +152,31 @@ func validSlots(g *PlaceItGame) []int {
 }
 
 func checkGameover(g *PlaceItGame) GameState {
+	var newState GameState
 	if len(g.ValidSlots) != 0 {
-		return PlaceState
+		newState = PlaceState
+	} else {
+		for _, v := range g.Slots {
+			if v == -1 {
+				newState = LoseState
+				break
+			}
+		}
+		if newState != LoseState {
+			newState = WinState
+		}
+		g.Score = calcScore(g)
 	}
+
+	return newState
+}
+
+func calcScore(g *PlaceItGame) int {
+	score := 0
 	for _, v := range g.Slots {
-		if v == -1 {
-			return LoseState
+		if v != -1 {
+			score++
 		}
 	}
-	return WinState
+	return score
 }
