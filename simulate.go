@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Dae314/placeit-sim/game"
 	"github.com/Dae314/placeit-sim/midPlace"
@@ -39,6 +40,7 @@ func playGame(g *game.PlaceItGame, c chan int, getPlace placeFunc) {
 }
 
 func main() {
+	start := time.Now()
 	placeMethodNames := []string{
 		"Random",
 		"Middle",
@@ -77,4 +79,6 @@ func main() {
 		fmt.Printf("Average for %s: %f\n", name, averages[i])
 		fmt.Printf("Histogram for %s: %v\n", name, histograms[i])
 	}
+	elapsed := time.Since(start)
+	fmt.Printf("\nSimulate took %s", elapsed)
 }
