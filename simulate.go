@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Dae314/placeit-sim/game"
+	"github.com/Dae314/placeit-sim/midPlace"
 	"github.com/Dae314/placeit-sim/randPlace"
 	"github.com/Dae314/placeit-sim/utils"
 	"golang.org/x/sync/errgroup"
@@ -38,8 +39,14 @@ func playGame(g *game.PlaceItGame, c chan int, getPlace placeFunc) {
 }
 
 func main() {
-	placeMethodNames := []string{"Random"}
-	placeMethods := []placeFunc{randPlace.GetPlacement}
+	placeMethodNames := []string{
+		"Random",
+		"Middle",
+	}
+	placeMethods := []placeFunc{
+		randPlace.GetPlacement,
+		midPlace.GetPlacement,
+	}
 	var averages []float32
 	var histograms [][]int
 
