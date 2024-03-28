@@ -41,6 +41,7 @@ func main() {
 	placeMethodNames := []string{"Random"}
 	placeMethods := []placeFunc{randPlace.GetPlacement}
 	var averages []float32
+	var histograms [][]int
 
 	for _, method := range placeMethods {
 		resultsC := make(chan int, maxTrials)
@@ -62,9 +63,11 @@ func main() {
 			resultsS = append(resultsS, r)
 		}
 		averages = append(averages, utils.Average(resultsS))
+		histograms = append(histograms, utils.Histogram(resultsS, 20))
 	}
 	fmt.Printf("Trials: %d\n", maxTrials)
 	for i, name := range placeMethodNames {
-		fmt.Printf("Average for %s: %f", name, averages[i])
+		fmt.Printf("Average for %s: %f\n", name, averages[i])
+		fmt.Printf("Histogram for %s: %v\n", name, histograms[i])
 	}
 }
