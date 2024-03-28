@@ -21,13 +21,11 @@ func TestContains(t *testing.T) {
 
 func TestRemoveFromSlice(t *testing.T) {
 	testSlice := []int{1, 2, 3, 4}
-	t.Run("Test for in bounds", func(t *testing.T) {
-		got := RemoveFromSlice(testSlice, 1)
-		want := []int{1, 4, 3}
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %v want %v", got, want)
-		}
-	})
+	got := RemoveFromSlice(testSlice, 1)
+	want := []int{1, 4, 3}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
 
 func TestAverage(t *testing.T) {
