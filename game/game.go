@@ -18,13 +18,13 @@ const (
 )
 
 type ErrGameInvalidState struct {
-	state  GameState
-	action string
+	State  GameState
+	Action string
 }
 
 func (e *ErrGameInvalidState) Error() string {
 	stateStrings := []string{"DrawState", "PlaceState", "WinState", "LoseState"}
-	return fmt.Sprintf("State %s is not a valid state for %s", stateStrings[e.state], e.action)
+	return fmt.Sprintf("State %s is not a valid state for %s", stateStrings[e.State], e.Action)
 }
 
 type ErrPlaceOutofBounds struct {
@@ -64,7 +64,7 @@ func NewGame() PlaceItGame {
 
 func (g *PlaceItGame) Draw() error {
 	if g.State != DrawState {
-		return &ErrGameInvalidState{state: g.State, action: "Draw"}
+		return &ErrGameInvalidState{State: g.State, Action: "Draw"}
 	}
 	randIdx := rand.Intn(len(g.Deck))
 	g.CurDraw = g.Deck[randIdx]
@@ -76,7 +76,7 @@ func (g *PlaceItGame) Draw() error {
 
 func (g *PlaceItGame) Place(i int) error {
 	if g.State != PlaceState {
-		return &ErrGameInvalidState{state: g.State, action: "Place"}
+		return &ErrGameInvalidState{State: g.State, Action: "Place"}
 	}
 	if !contains(g.ValidSlots, i) {
 		return &ErrPlaceOutofBounds{index: i}
