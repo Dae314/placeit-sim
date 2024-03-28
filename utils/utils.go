@@ -48,3 +48,11 @@ func Contains[T comparable](s []T, e T) bool {
 	}
 	return false
 }
+
+func Average(s []int) float32 {
+	total := 0
+	for _, v := range s {
+		total += v
+	}
+	return float32(total) / float32(len(s))
+}
