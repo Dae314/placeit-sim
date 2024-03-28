@@ -22,5 +22,5 @@ func GetPlacement(g *game.PlaceItGame) (int, error) {
 	if len(g.ValidSlots) == 0 {
 		return -1, &ErrNoValidSlots{}
 	}
-	return rand.Intn(len(g.ValidSlots)), nil
+	return g.ValidSlots[rand.Intn(len(g.ValidSlots))], nil
 }
