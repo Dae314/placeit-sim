@@ -94,6 +94,17 @@ func (g *PlaceItGame) Place(i int) error {
 	return nil
 }
 
+func (g PlaceItGame) String() string {
+	return fmt.Sprintf("Slots: %v\nState: %d\nCurDraw: %d\nValidSlots: %v\nScore: %d\nDeck Size: %d\n",
+		g.Slots,
+		g.State,
+		g.CurDraw,
+		g.ValidSlots,
+		g.Score,
+		len(g.Deck),
+	)
+}
+
 func validSlots(g *PlaceItGame) []int {
 	type pair struct {
 		index int
