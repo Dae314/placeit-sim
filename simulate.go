@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Dae314/placeit-sim/binPlace"
 	"github.com/Dae314/placeit-sim/game"
 	"github.com/Dae314/placeit-sim/midPlace"
 	"github.com/Dae314/placeit-sim/randPlace"
@@ -44,10 +45,12 @@ func main() {
 	placeMethodNames := []string{
 		"Random",
 		"Middle",
+		"Bin",
 	}
 	placeMethods := []placeFunc{
 		randPlace.GetPlacement,
 		midPlace.GetPlacement,
+		binPlace.GetPlacement,
 	}
 	var averages []float32
 	var histograms [][]int
