@@ -67,3 +67,20 @@ func Histogram(s []int, max int) []int {
 	}
 	return retVal
 }
+
+func MaxSlicei(s []float64) int {
+	if len(s) == 0 {
+		return -1
+	}
+
+	maxIdx := 0
+	max := s[maxIdx]
+	for i, v := range s {
+		if v > max {
+			max = v
+			maxIdx = i
+		}
+	}
+
+	return maxIdx
+}

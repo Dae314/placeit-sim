@@ -6,6 +6,7 @@ import (
 
 	"github.com/Dae314/placeit-sim/binPlace"
 	"github.com/Dae314/placeit-sim/game"
+	"github.com/Dae314/placeit-sim/hyperPlace"
 	"github.com/Dae314/placeit-sim/midPlace"
 	"github.com/Dae314/placeit-sim/randPlace"
 	"github.com/Dae314/placeit-sim/utils"
@@ -46,11 +47,13 @@ func main() {
 		"Random",
 		"Middle",
 		"Bin",
+		"Hyper Geom",
 	}
 	placeMethods := []placeFunc{
 		randPlace.GetPlacement,
 		midPlace.GetPlacement,
 		binPlace.GetPlacement,
+		hyperPlace.GetPlacement,
 	}
 	var averages []float32
 	var histograms [][]int
