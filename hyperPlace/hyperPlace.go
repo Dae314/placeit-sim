@@ -3,7 +3,6 @@ package hyperPlace
 import (
 	"github.com/Dae314/placeit-sim/game"
 	"github.com/Dae314/placeit-sim/utils"
-	"gonum.org/v1/gonum/stat/combin"
 )
 
 type ErrNoValidSlots struct{}
@@ -39,7 +38,7 @@ func GetPlacement(g *game.PlaceItGame) (int, error) {
 		testSlots := make([]int, len(g.Slots))
 		_ = copy(testSlots, g.Slots)
 		testSlots[v] = g.CurDraw
-		winRates = append(winRates, calcWin(testSlots, len(g.Deck), countEmpty(testSlots)))
+		winRates = append(winRates, calcWin(testSlots, g))
 	}
 
 	maxIdx := utils.MaxSlicei(winRates)
@@ -47,30 +46,42 @@ func GetPlacement(g *game.PlaceItGame) (int, error) {
 	return g.ValidSlots[maxIdx], nil
 }
 
-func calcWin(slots []int, deckSize int, draws int) float64 {
+func calcWin(slots []int, testGame *game.PlaceItGame) float64 {
 	gaps := getGaps(slots)
-	win := float64(1)
+	deckSize := len(testGame.Deck)
+	draws := countEmpty(testGame.Slots)
+	gapCombinAccu := float64(1)
+	gapRangeAccu := 0
+	gapLenAccu := 0
 	for _, g := range gaps {
-		gapRange := g.max - g.min
-		win = (float64(combin.Binomial(gapRange, g.len)) * float64(combin.Binomial(deckSize-gapRange, draws-g.len))) / float64(combin.Binomial(deckSize, draws))
+		gapRange := calcGapRange(g, testGame.Deck)
+		if gapRange < g.len {
+			return 0
+		}
+		gapCombinAccu = gapCombinAccu * Choose(float64(gapRange), float64(g.len))
+		gapRangeAccu = gapRangeAccu + gapRange
+		gapLenAccu = gapLenAccu + g.len
 	}
-	return win
+	allCombin := Choose(float64(deckSize), float64(draws))
+
+	return gapCombinAccu / allCombin
 }
 
 func getGaps(slots []int) []gap {
 	var gaps []gap
+	gapStart := -1
+	gapLen := 0
 	for i, v := range slots {
-		gapStart := -1
-		gapLen := 0
 		if i == 0 && v == -1 {
-			gapStart = 1
+			gapStart = 0
 			gapLen++
 		} else if i == len(slots)-1 && gapStart != -1 && v == -1 {
 			gapLen++
-			gaps = append(gaps, gap{min: gapStart, max: 1000, len: gapLen})
+			gaps = append(gaps, gap{min: gapStart, max: 1001, len: gapLen})
 		} else if v != -1 && gapStart != -1 {
 			gaps = append(gaps, gap{min: gapStart, max: v, len: gapLen})
 			gapStart = -1
+			gapLen = 0
 		} else if v == -1 && gapStart == -1 {
 			gapStart = slots[i-1]
 			gapLen++
@@ -89,4 +100,25 @@ func countEmpty(slots []int) int {
 		}
 	}
 	return i
+}
+
+func calcGapRange(g gap, deck []int) int {
+	i := 0
+	for _, v := range deck {
+		if v > g.min && v < g.max {
+			i++
+		}
+	}
+	return i
+}
+
+func Choose(n, k float64) float64 {
+	if k > n/2 {
+		k = n - k
+	}
+	b := float64(1)
+	for i := float64(1); i <= k; i++ {
+		b = (n - k + i) * b / i
+	}
+	return b
 }
