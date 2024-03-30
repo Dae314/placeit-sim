@@ -19,4 +19,6 @@ Based on this testing, the optimal strategy for PlaceIt would be binning, where 
 
 Somehow the binning strategy even outperforms the probabilistic strategy where I tried to use the Hypergeometric Distribution to calculate the probability of winning if you place the number in each valid slot, and pick the slot with the highest win probability.
 
+Win rate (20 placed numbers) with optimal strategy is about 0.01%, or 1 win in 10,000 games.
+
 MIT Licensed
