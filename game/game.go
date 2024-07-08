@@ -7,7 +7,7 @@ import (
 	"github.com/Dae314/placeit-sim/utils"
 )
 
-const deckSize = 1000
+const deckSize = 999
 const slotSize = 20
 
 type GameState int

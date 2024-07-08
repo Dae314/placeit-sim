@@ -77,7 +77,7 @@ func getGaps(slots []int) []gap {
 			gapLen++
 		} else if i == len(slots)-1 && gapStart != -1 && v == -1 {
 			gapLen++
-			gaps = append(gaps, gap{min: gapStart, max: 1001, len: gapLen})
+			gaps = append(gaps, gap{min: gapStart, max: 1000, len: gapLen})
 		} else if v != -1 && gapStart != -1 {
 			gaps = append(gaps, gap{min: gapStart, max: v, len: gapLen})
 			gapStart = -1

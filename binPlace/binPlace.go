@@ -40,7 +40,7 @@ func GetPlacement(g *game.PlaceItGame) (int, error) {
 	}
 
 	if maxIdx == len(g.Slots)-1 {
-		max = 1001
+		max = 1000
 	} else {
 		max = g.Slots[maxIdx+1]
 	}
