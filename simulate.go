@@ -11,6 +11,7 @@ import (
 	"github.com/Dae314/placeit-sim/midPlace"
 	"github.com/Dae314/placeit-sim/randPlace"
 	"github.com/Dae314/placeit-sim/simpleBinPlace"
+	"github.com/Dae314/placeit-sim/simpleBinRand"
 	"github.com/Dae314/placeit-sim/utils"
 	"golang.org/x/sync/errgroup"
 )
@@ -56,6 +57,7 @@ func main() {
 		"Bin",
 		"Hyper Geom",
 		"Simple Bin",
+		"Simple Bin Rand",
 	}
 	placeMethods := []placeFunc{
 		randPlace.GetPlacement,
@@ -63,6 +65,7 @@ func main() {
 		binPlace.GetPlacement,
 		hyperPlace.GetPlacement,
 		simpleBinPlace.GetPlacement,
+		simpleBinRand.GetPlacement,
 	}
 	var averages []float32
 	var histograms [][]int
