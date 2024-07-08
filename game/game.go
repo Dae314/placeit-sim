@@ -176,13 +176,13 @@ func checkGameover(g *PlaceItGame) GameState {
 		if newState != LoseState {
 			newState = WinState
 		}
-		g.Score = calcScore(g)
+		g.Score = CalcScore(g)
 	}
 
 	return newState
 }
 
-func calcScore(g *PlaceItGame) int {
+func CalcScore(g *PlaceItGame) int {
 	score := 0
 	for _, v := range g.Slots {
 		if v != -1 {

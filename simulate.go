@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/Dae314/placeit-sim/hyperPlace"
 	"github.com/Dae314/placeit-sim/midPlace"
 	"github.com/Dae314/placeit-sim/randPlace"
+	"github.com/Dae314/placeit-sim/simpleBinPlace"
 	"github.com/Dae314/placeit-sim/utils"
 	"golang.org/x/sync/errgroup"
 )
@@ -29,6 +31,11 @@ func playGame(g *game.PlaceItGame, c chan int, getPlace placeFunc) {
 		case game.PlaceState:
 			placement, err := getPlace(g)
 			if err != nil {
+				endGame := &simpleBinPlace.ErrEndGame{}
+				if errors.As(err, &endGame) {
+					c <- game.CalcScore(g)
+					return
+				}
 				fmt.Printf("Error encountered: %v\n", err)
 				return
 			}
@@ -48,12 +55,14 @@ func main() {
 		"Middle",
 		"Bin",
 		"Hyper Geom",
+		"Simple Bin",
 	}
 	placeMethods := []placeFunc{
 		randPlace.GetPlacement,
 		midPlace.GetPlacement,
 		binPlace.GetPlacement,
 		hyperPlace.GetPlacement,
+		simpleBinPlace.GetPlacement,
 	}
 	var averages []float32
 	var histograms [][]int
